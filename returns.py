@@ -1,19 +1,7 @@
 import pandas as pd
 
-def calculate_returns(df: DataFrame):
-    """Calculates the the total and percentage return for a stock over a period
-
-    Requirements for Hasan:
-    1) Be a pandas df
-    2) Contain a row of stock price data
-    3) Contain a column names "Close"
-    4) Be order chronologically from oldest to most recent date
-    ex)
-    Date         Close
-    2026-01-01    100.00
-    2026-01-02    105.00
-    2026-01-03    110.00
-    """
+def calculate_returns(df: pd.DataFrame):
+    """Calculates the the total and percentage return for a stock over a period"""
 
     if df.empty:
         raise ValueError("DataFrame is empty")
@@ -31,15 +19,3 @@ def calculate_returns(df: DataFrame):
     )
 
     return total_return, percent_return
-
-if __name__ == "__main__":
-    test_data = {
-        "Close": [100, 105, 110]
-    }
-
-    test_df = pd.DataFrame(test_data)
-
-    total_return, percentage_return = calculate_returns(test_df)
-
-    print("Total Return:", total_return)
-    print("Percentage Return:", percentage_return,"%")

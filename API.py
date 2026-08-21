@@ -40,3 +40,5 @@ def get_stock_quote(symbol):
     with col2:
         st.subheader(f"{symbol}: Stock Data Table")
         st.dataframe(chart_data)
+
+    return data["pc"], data["c"] #to calculate returns

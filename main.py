@@ -7,21 +7,24 @@ We have created a stocks streamlit page
     
 """
 
-
 import streamlit as st
 import API
+from day_returns import calculate_returns
 
 def main():
-    ticker = st.text_input("Enter in the stock ticker that you would like to see:")
+    ticker = st.text_input("Which stock ticker would like to see?")
+
     if st.button("Stock Day Data"):
-        API.get_stock_quote(ticker)
+        previous_close, current_price = API.get_stock_quote(ticker)
 
-    st.subheader("Stock Returns")
+        total_return, percent_return = calculate_returns(previous_close,current_price) #Daniel's Feature
 
-    st.write(f"Previous Close: ${previous_close:.2f}")
-    st.write(f"Current Price: ${current_price:.2f}")
-    st.write(f"Price Change: ${total_return:.2f}")
-    st.write(f"Percentage Return: {percent_return:.2f}%")
+        st.subheader("Stock Returns")
+
+        st.write(f"Previous Close: ${previous_close:.2f}")
+        st.write(f"Current Price: ${current_price:.2f}")
+        st.write(f"Price Change: ${total_return:.2f}")
+        st.write(f"Percentage Return: {percent_return:.2f}%")
 
 
 if __name__ == "__main__":
