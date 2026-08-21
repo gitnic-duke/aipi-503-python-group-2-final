@@ -31,3 +31,15 @@ def calculate_returns(df: DataFrame):
     )
 
     return total_return, percent_return
+
+if __name__ == "__main__":
+    test_data = {
+        "Close": [100, 105, 110]
+    }
+
+    test_df = pd.DataFrame(test_data)
+
+    total_return, percentage_return = calculate_returns(test_df)
+
+    print("Total Return:", total_return)
+    print("Percentage Return:", percentage_return,"%")
