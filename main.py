@@ -15,6 +15,8 @@ def main():
     ticker = st.text_input("Enter in the stock ticker that you would like to see:")
     if st.button("Stock Day Data"):
         API.get_stock_quote(ticker)
+    if st.button("Company News"):
+        API.get_company_news(ticker)
 
 if __name__ == "__main__":
     st.title("Welcome to the Stock Market App")
