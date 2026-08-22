@@ -72,3 +72,4 @@ def get_company_news(symbol):
             use_container_width=True
             )
         st.link_button(data[2]['headline'], data[2]['url'])
+    return data["pc"], data["c"] #to calculate returns
