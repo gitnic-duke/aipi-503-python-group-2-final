@@ -12,7 +12,9 @@ We have created a stocks streamlit page
 import streamlit as st
 import API
 from day_returns import calculate_returns
+import matplotlib.pyplot as plt
 import pandas as pd
+
 
 def display_stock_day_data(symbol):
     """
@@ -74,6 +76,34 @@ def display_company_news(symbol):
             )
         st.link_button(data[2]['headline'], data[2]['url'])
 
+def display_expert_recommendations(symbol):
+    """
+    Retrives expert recommendations for a given ticker symbol for this month
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    current_recommendations = API.get_recommendations(symbol)[0]
+    timestamp = current_recommendations["period"]
+    recommendation_categories = ["strongBuy", "buy", "hold", "sell", "strongSell"]
+    recommendation_counts_dict = {k: current_recommendations[k] for k in recommendation_categories}
+    total_recommendations = sum(recommendation_counts_dict.values())
+    st.subheader(f"Expert recommendations for {symbol} on {timestamp}")
+
+    # Display most recommended action
+    most_recommended_action, most_recommended_action_count = max(recommendation_counts_dict.items(), key=lambda item: item[1])
+    st.write(f"Most experts ({most_recommended_action_count}/{total_recommendations}) recommend this stock as a {most_recommended_action}.")
+
+    # Pie chart for recommendation distributions
+    fig, ax = plt.subplots()
+    ax.pie(
+        recommendation_counts_dict.values(),
+        labels=recommendation_counts_dict.keys(),
+        autopct=lambda pct: f'{int(pct * total_recommendations / 100)} ({pct:.1f}%)' # show percentage and number of recommendations
+    )
+    ax.set_title(f"Expert Recommendations for {symbol} on {timestamp}")
+    st.pyplot(fig)
+
 def main():
     st.title("Welcome to the Stock Market App")
     st.subheader("Track stock prices, view company info, and stay on top of the market, all in one place:")
@@ -84,6 +114,9 @@ def main():
         
     if st.button("Company News"):
         display_company_news(ticker)
+
+    if st.button("Expert Recommendations"):
+        display_expert_recommendations(ticker)
 
 
 
