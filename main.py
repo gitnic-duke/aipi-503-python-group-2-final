@@ -3,6 +3,8 @@ AIPI 503: group project(Hasan Al-Quaid, Raul Cepin, Mihir Kosuri, Caleb McNeill,
 =================================================
 We have created a stocks streamlit page
     - Uses the Finnhub API
+    - Stock Day Data Button: when selected, displays the stock quote table, graph, and stock returns data
+    - Company News Button: when selected, displays the top 3 latest news stories with images and links
     - ADD ANY FEATURES YOU HAVE IMPLEMENTED HERE 
     
 """
