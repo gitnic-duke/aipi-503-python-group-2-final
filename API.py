@@ -40,5 +40,36 @@ def get_stock_quote(symbol):
     with col2:
         st.subheader(f"{symbol}: Stock Data Table")
         st.dataframe(chart_data)
-
     return data["pc"], data["c"] #to calculate returns
+
+def get_company_news(symbol):
+    """
+    Retrieves link to latest Company news data from Finnhub and displays as a selector button with retreived image.
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    url = "https://finnhub.io/api/v1/company-news"
+    params = {"symbol": symbol, "token": API_KEY}
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.image(
+            data[0]['image'],
+            use_container_width=True
+            )
+        st.link_button(data[0]['headline'], data[0]['url'])
+    with col2:
+        st.image(
+            data[1]['image'],
+            use_container_width=True
+            )
+        st.link_button(data[1]['headline'], data[1]['url'])
+    with col3:
+        st.image(
+            data[2]['image'],
+            use_container_width=True
+            )
+        st.link_button(data[2]['headline'], data[2]['url'])

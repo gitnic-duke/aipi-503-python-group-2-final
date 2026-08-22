@@ -3,6 +3,8 @@ AIPI 503: group project(Hasan Al-Quaid, Raul Cepin, Mihir Kosuri, Caleb McNeill,
 =================================================
 We have created a stocks streamlit page
     - Uses the Finnhub API
+    - Stock Day Data Button: when selected, displays the stock quote table, graph, and stock returns data
+    - Company News Button: when selected, displays the top 3 latest news stories with images and links
     - ADD ANY FEATURES YOU HAVE IMPLEMENTED HERE 
     
 """
@@ -16,7 +18,6 @@ def main():
 
     if st.button("Stock Day Data"):
         previous_close, current_price = API.get_stock_quote(ticker)
-
         total_return, percent_return = calculate_returns(previous_close,current_price) #Daniel's Feature
 
         st.subheader("Stock Returns")
@@ -25,6 +26,10 @@ def main():
         st.write(f"Current Price: ${current_price:.2f}")
         st.write(f"Price Change: ${total_return:.2f}")
         st.write(f"Percentage Return: {percent_return:.2f}%")
+    if st.button("Company News"):
+        API.get_company_news(ticker)
+
+
 
 
 if __name__ == "__main__":
