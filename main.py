@@ -15,11 +15,7 @@ def main():
     ticker = st.text_input("Which stock ticker would like to see?")
 
     if st.button("Stock Day Data"):
-        API.get_stock_quote(ticker)
-    if st.button("Company News"):
-        API.get_company_news(ticker)
         previous_close, current_price = API.get_stock_quote(ticker)
-
         total_return, percent_return = calculate_returns(previous_close,current_price) #Daniel's Feature
 
         st.subheader("Stock Returns")
@@ -28,6 +24,10 @@ def main():
         st.write(f"Current Price: ${current_price:.2f}")
         st.write(f"Price Change: ${total_return:.2f}")
         st.write(f"Percentage Return: {percent_return:.2f}%")
+    if st.button("Company News"):
+        API.get_company_news(ticker)
+
+
 
 
 if __name__ == "__main__":

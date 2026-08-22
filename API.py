@@ -40,6 +40,7 @@ def get_stock_quote(symbol):
     with col2:
         st.subheader(f"{symbol}: Stock Data Table")
         st.dataframe(chart_data)
+    return data["pc"], data["c"] #to calculate returns
 
 def get_company_news(symbol):
     """
@@ -72,4 +73,3 @@ def get_company_news(symbol):
             use_container_width=True
             )
         st.link_button(data[2]['headline'], data[2]['url'])
-    return data["pc"], data["c"] #to calculate returns
