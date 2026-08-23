@@ -48,6 +48,8 @@ def display_stock_day_data(symbol):
     st.write(f"Price Change: ${total_return:.2f}")
     st.write(f"Percentage Return: {percent_return:.2f}%")
 
+    display_price_alert(symbol, percent_return)
+
 def display_company_news(symbol):
     """
     Retrieves link to latest Company news data from Finnhub and displays as a selector button with retreived image.
@@ -103,6 +105,22 @@ def display_expert_recommendations(symbol):
     )
     ax.set_title(f"Expert Recommendations for {symbol} on {timestamp}")
     st.pyplot(fig)
+
+def display_price_alert(symbol, percent_change):
+    """
+    Displays an alert if the stock's price change exceeds a specified threshold for the day.
+
+    Parameters:
+        symbol (str): Stock ticker symbol.
+        percent_change (float): Percentage change in price from previous close.
+    """
+    threshold = 2.0
+    if percent_change >= threshold:
+        st.success(f"{symbol} is up {percent_change:.2f}% today")
+    elif percent_change <= -threshold:
+        st.error(f"{symbol} is down {abs(percent_change):.2f}% today")
+    else:
+        st.info(f"{symbol} is roughly flat today")
 
 def main():
     st.title("Welcome to the Stock Market App")
