@@ -6,6 +6,8 @@ from the Finnhub API.
 
     - get_stock_quote(symbol): displays current price, change, high,
       low, open, and previous close data, and displays in graph
+    - get_company_news(symbol): displays up to 3 of the latest news stories
+        with images and provides link to the story webpages
     - ADD ANY ADDITIONAL FUNCTIONS HERE
 """
 import os

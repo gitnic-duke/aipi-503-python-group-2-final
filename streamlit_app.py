@@ -58,25 +58,28 @@ def display_company_news(symbol):
             symbol (str): Stock ticker symbol.
     """
     data = API.get_company_news(symbol)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.image(
-            data[0]['image'],
-            use_container_width=True
-            )
-        st.link_button(data[0]['headline'], data[0]['url'])
-    with col2:
-        st.image(
-            data[1]['image'],
-            use_container_width=True
-            )
-        st.link_button(data[1]['headline'], data[1]['url'])
-    with col3:
-        st.image(
-            data[2]['image'],
-            use_container_width=True
-            )
-        st.link_button(data[2]['headline'], data[2]['url'])
+    column_number = len(data)
+
+    # Troubleshoot Columns
+    #st.write(f"Column Number:", {column_number})
+    #st.write(data)
+
+    if column_number == 0:
+        st.header("No News Available. Check again tomorrow.")
+
+    elif column_number >= 1:
+        columns = st.columns(column_number)
+        for col in columns:
+            if data[columns.index(col)]['image'] == "":
+                pass
+            else:
+                st.image(
+                data[columns.index(col)]['image'],
+                use_container_width=True
+                )
+            st.link_button(data[columns.index(col)]['headline'], data[columns.index(col)]['url'])
+            if columns.index(col) > 3:
+                break
 
 def display_expert_recommendations(symbol):
     """
