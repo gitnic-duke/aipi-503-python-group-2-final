@@ -1,0 +1,11 @@
+# .env file with API keys
+.env
+
+# local virtual env
+.venv
+
+# .streamlit secrets
+.streamlit/
+
+# pycache
+__pycache__/
