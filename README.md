@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ### API Key set up
 1. Copy your API key from Finnhub.
 If you don't have one, create one on https://finnhub.io/
-2. Create a .streamlit/secrets.toml file with the content OPENWEATHER_API_KEY="{your_API_key}"
+2. Create a .streamlit/secrets.toml file with the content STOCK_API_KEY="{your_API_key}"
 3. Save the file
 ```bash
 streamlit run streamlit_app.py

@@ -41,3 +41,17 @@ def get_company_news(symbol):
     data = response.json()
 
     return data
+
+def get_recommendations(symbol):
+    """
+    Retrives expert recommendations for a given ticker symbol.
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    url = "https://finnhub.io/api/v1/stock/recommendation"
+    params = {"symbol": symbol, "token": API_KEY}
+    response = requests.get(url, params=params)
+    data = response.json()
+    
+    return data
