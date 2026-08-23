@@ -70,7 +70,10 @@ def display_company_news(symbol):
     elif column_number >= 1:
         columns = st.columns(column_number)
         for col in columns:
-            if data[columns.index(col)]['image'] == "":
+            if "error" in data:
+                st.subheader(data["error"])
+                break
+            elif data[columns.index(col)]['image'] == "":
                 pass
             else:
                 st.image(
