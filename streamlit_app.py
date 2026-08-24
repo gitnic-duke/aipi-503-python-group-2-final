@@ -3,10 +3,10 @@ AIPI 503: group project(Hasan Al-Quaid, Raul Cepin, Mihir Kosuri, Caleb McNeill,
 =================================================
 We have created a stocks streamlit page
     - Uses the Finnhub API
-    - Stock Day Data Button: when selected, displays the stock quote table, graph, and stock returns data
-    - Company News Button: when selected, displays the top 3 latest news stories with images and links
+    - Stock Day Data Button: displays the stock quote table, graph, and stock returns data
+    - Company News Button: displays the top 3 latest news stories with images and links
+    - Expert Recommendations Button: displays the most recommended action on the stock by experts with a pie chart showing all recommendations
     - Company Profile Button: displays company logo, industry, market cap, IPO date, and website link
-    - ADD ANY FEATURES YOU HAVE IMPLEMENTED HERE 
     
 """
 
@@ -58,14 +58,10 @@ def display_company_news(symbol):
     Retrieves link to latest Company news data from Finnhub and displays as a selector button with retreived image.
 
     Parameters:
-            symbol (str): Stock ticker symbol.
+        symbol (str): Stock ticker symbol.
     """
     data = API.get_company_news(symbol)
     column_number = len(data)
-
-    # Troubleshoot Columns
-    #st.write(f"Column Number:", {column_number})
-    #st.write(data)
 
     if column_number == 0:
         st.header("No News Available. Check again tomorrow.")
@@ -89,37 +85,50 @@ def display_company_news(symbol):
 
 def display_expert_recommendations(symbol):
     """
-    Retrives expert recommendations for a given ticker symbol for this month
+    Retrives expert recommendations for a given ticker symbol for this month.
+    Displays most recommended action and pie chart of all recommendations
 
     Parameters:
-            symbol (str): Stock ticker symbol.
+        symbol (str): Stock ticker symbol.
     """
+    if not symbol:
+        st.subheader("Invalid Stock Ticker")
+        return
+
     if API.get_recommendations(symbol) == []:
         st.subheader("Invalid Stock Ticker")
         return
+
+    # Get and process recommendation data
     current_recommendations = API.get_recommendations(symbol)[0]
-    # if current_recommendations.empty():
-    #     st.subheader("Invalid Stock Ticker")
-    #     return
     timestamp = current_recommendations["period"]
     recommendation_categories = ["strongBuy", "buy", "hold", "sell", "strongSell"]
     recommendation_counts_dict = {k: current_recommendations[k] for k in recommendation_categories}
     total_recommendations = sum(recommendation_counts_dict.values())
-    st.subheader(f"Expert recommendations for {symbol} on {timestamp}")
 
     # Display most recommended action
+    st.subheader(f"Expert recommendations for {symbol} on {timestamp}")
     most_recommended_action, most_recommended_action_count = max(recommendation_counts_dict.items(), key=lambda item: item[1])
     st.write(f"Most experts ({most_recommended_action_count}/{total_recommendations}) recommend this stock as a {most_recommended_action}.")
 
     # Pie chart for recommendation distributions
+    non_zero_recommendation_counts_dict = {k: v for k, v in recommendation_counts_dict.items() if v != 0} # remove options with 0 recommendations to clean up chart
     fig, ax = plt.subplots()
     ax.pie(
-        recommendation_counts_dict.values(),
-        labels=recommendation_counts_dict.keys(),
+        non_zero_recommendation_counts_dict.values(),
+        labels=non_zero_recommendation_counts_dict.keys(),
         autopct=lambda pct: f'{int(pct * total_recommendations / 100)} ({pct:.1f}%)' # show percentage and number of recommendations
     )
     ax.set_title(f"Expert Recommendations for {symbol} on {timestamp}")
     st.pyplot(fig)
+
+    # Display non recommended actions
+    non_selected_options = []
+    for category in recommendation_categories:
+        if category not in non_zero_recommendation_counts_dict.keys():
+            non_selected_options.append(category)
+    if non_selected_options:
+        st.write(f"0 experts recommended {symbol} as {', '.join(non_selected_options)}")
 
 def display_price_alert(symbol, percent_change):
     """
@@ -142,7 +151,7 @@ def display_company_profile(symbol):
     Displays company profile information for a given ticker symbol.
 
     Parameters:
-            symbol (str): Stock ticker symbol.
+        symbol (str): Stock ticker symbol.
     """
     data = API.get_company_profile(symbol)
 
@@ -180,6 +189,7 @@ def main():
     st.title("Welcome to the Stock Market App")
     st.subheader("Track stock prices, view company info, and stay on top of the market, all in one place:")
     ticker = st.text_input("Which stock ticker would you like to see?")
+    st.info("Note: This app is intended to work only for company stocks, mutual fund tickers will not work")
     ticker = ticker.upper()
     if st.button("Stock Day Data"):
         display_stock_day_data(ticker)
