@@ -12,9 +12,11 @@ from the Finnhub API.
 """
 import os
 import requests
+import streamlit as st
 from dotenv import load_dotenv
+
 load_dotenv()
-API_KEY = os.getenv("STOCK_API_KEY")
+API_KEY = os.getenv("STOCK_API_KEY") or st.secrets.get("STOCK_API_KEY")
 
 def get_stock_quote(symbol):
     """
