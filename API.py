@@ -4,11 +4,14 @@ AIPI 503: Stock Quote Fetcher
 This module provides functions that interact and retrieve data 
 from the Finnhub API.
 
-    - get_stock_quote(symbol): displays current price, change, high,
-      low, open, and previous close data, and displays in graph
-    - get_company_news(symbol): displays up to 3 of the latest news stories
-        with images and provides link to the story webpages
-    - ADD ANY ADDITIONAL FUNCTIONS HERE
+    - get_stock_quote(symbol): gets stock quote json from Finnhub API call
+      to display current price, change, high, low, open, and previous close data, and displays in graph
+    - get_company_news(symbol): gets company news json from Finnhub API call
+      to display up to 3 of the latest news stories with images and provides link to the story webpages
+    - get_recommendations(symbol): gets recommendation json from Finnhub API call
+      to display most recommended action and a pie chart of all recommendations
+    - get_company_profile(symbol): gets stock profile json from Finnhub API call
+      to display general company profile information
 """
 import os
 import requests
