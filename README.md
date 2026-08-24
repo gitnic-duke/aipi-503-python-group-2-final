@@ -1,8 +1,21 @@
-# aipi-503-python-group-2-final
-AIPI 503 final project for group 2 (Hasan Al-Quaid, Raul Cepin, Mihir Kosuri, Caleb McNeill, Nicholas Wang, Daniel Yaari)
+### aipi-503-python-group-2-final
+AIPI 503 final project for Group 2: Hasan Al-Quaid, Raul Cepin, Mihir Kosuri, Caleb McNeill, Nicholas Wang, and Daniel Yaari.
+
+### Project Overview
+
+The app is an interactive stock market dashboard built using Python, Streamlit, and the Finnhub API provided. When activated, users can enter a stock ticker (i.e. AAPL) to view current market data, calculate daily stock returns, read recent company news, and view expert recommendations. This is an all-in-one place for asset analysis!
+
+Some key features in the app include:
+- Current stock price data and visualizations
+- Daily price change and percentage return
+- Stock price movement alerts
+- Company news
+- Expert buy, hold, and sell recommendations
 
 ### Prerequisites
 - Python 3.9+
+- Git
+- Finnhub API key
 
 ### Installation
 ```bash
