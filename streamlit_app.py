@@ -5,6 +5,7 @@ We have created a stocks streamlit page
     - Uses the Finnhub API
     - Stock Day Data Button: when selected, displays the stock quote table, graph, and stock returns data
     - Company News Button: when selected, displays the top 3 latest news stories with images and links
+    - Company Profile Button: displays company logo, industry, market cap, IPO date, and website link
     - ADD ANY FEATURES YOU HAVE IMPLEMENTED HERE 
     
 """
@@ -136,11 +137,50 @@ def display_price_alert(symbol, percent_change):
     else:
         st.info(f"{symbol} is roughly flat today")
 
+def display_company_profile(symbol):
+    """
+    Displays company profile information for a given ticker symbol.
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    data = API.get_company_profile(symbol)
+
+    if not data:
+        st.warning(f"No company profile found for '{symbol}'. Check the ticker symbol.")
+        return
+
+    col1, col2 = st.columns([1, 3])
+
+    with col1:
+        if data.get("logo"):
+            st.image(data["logo"], width=100)
+
+    with col2:
+        st.subheader(data.get("name", symbol))
+        st.write(f"**Industry:** {data.get('finnhubIndustry', 'N/A')}")
+        st.write(f"**Exchange:** {data.get('exchange', 'N/A')}")
+        st.write(f"**Country:** {data.get('country', 'N/A')}")
+
+    market_cap = data.get("marketCapitalization", 0)
+    if market_cap >= 1_000_000:
+        cap_display = f"${market_cap / 1_000_000:.2f} Trillion"
+    elif market_cap >= 1_000:
+        cap_display = f"${market_cap / 1_000:.2f} Billion"
+    else:
+        cap_display = f"${market_cap:.2f} Million"
+
+    st.write(f"**Market Cap:** {cap_display}")
+    st.write(f"**IPO Date:** {data.get('ipo', 'N/A')}")
+
+    if data.get("weburl"):
+        st.link_button("Company Website", data["weburl"])
+
 def main():
     st.title("Welcome to the Stock Market App")
     st.subheader("Track stock prices, view company info, and stay on top of the market, all in one place:")
     ticker = st.text_input("Which stock ticker would you like to see?")
-
+    ticker = ticker.upper()
     if st.button("Stock Day Data"):
         display_stock_day_data(ticker)
         
@@ -149,7 +189,9 @@ def main():
 
     if st.button("Expert Recommendations"):
         display_expert_recommendations(ticker)
-
+    
+    if st.button("Company Profile"):
+        display_company_profile(ticker)
 
 
 

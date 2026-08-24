@@ -62,6 +62,21 @@ def get_recommendations(symbol):
         print("Invalid Stock Ticker")
     return data
 
+def get_company_profile(symbol):
+    """
+    Retrieves the company profile for a given ticker symbol.
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    url = "https://finnhub.io/api/v1/stock/profile2"
+    params = {"symbol": symbol, "token": API_KEY}
+    response = requests.get(url, params=params)
+    data = response.json()
+    if not data:
+        print("Invalid Stock Ticker")
+    return data
+
 def main():
     print("Welcome to the Stock Market App")
     print("Track stock prices, view company info, and stay on top of the market, all in one place:")
@@ -70,6 +85,7 @@ def main():
     valid_symbol = False
     while valid_symbol !=True:
         symbol = input("Which stock ticker would you like to see? ")
+        symbol = symbol.upper()
         data = get_stock_quote(symbol)
         if data['c'] == 0:
             continue
@@ -81,6 +97,7 @@ def main():
     1: Get Stock Quote
     2: Get Company News
     3: Get Recommendations
+    4: Get Company Profile
     Exit
     """
     option = ""
@@ -92,6 +109,8 @@ def main():
             print(get_company_news(symbol))
         elif option == "3":
             print(get_recommendations(symbol))
+        elif option == "4":
+            print(get_company_profile(symbol))
         else:
             print("Entry is invalid")
 
