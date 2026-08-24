@@ -27,7 +27,8 @@ def get_stock_quote(symbol):
     params = {"symbol": symbol, "token": API_KEY}
     response = requests.get(url, params=params)
     data = response.json()
-
+    if data['c'] == 0:
+        print("Invalid Stock Ticker")
     return data
 
 def get_company_news(symbol):
@@ -41,7 +42,9 @@ def get_company_news(symbol):
     params = {"symbol": symbol, "token": API_KEY}
     response = requests.get(url, params=params)
     data = response.json()
-
+    column_number = len(data)
+    if column_number == 0:
+        print("No News Available. Check again tomorrow.")
     return data
 
 def get_recommendations(symbol):
@@ -55,7 +58,8 @@ def get_recommendations(symbol):
     params = {"symbol": symbol, "token": API_KEY}
     response = requests.get(url, params=params)
     data = response.json()
-    
+    if data == []:
+        print("Invalid Stock Ticker")
     return data
 
 def get_company_profile(symbol):
@@ -69,5 +73,48 @@ def get_company_profile(symbol):
     params = {"symbol": symbol, "token": API_KEY}
     response = requests.get(url, params=params)
     data = response.json()
-
+    if not data:
+        print("Invalid Stock Ticker")
     return data
+
+def main():
+    print("Welcome to the Stock Market App")
+    print("Track stock prices, view company info, and stay on top of the market, all in one place:")
+    
+    symbol = ""
+    valid_symbol = False
+    while valid_symbol !=True:
+        symbol = input("Which stock ticker would you like to see? ")
+        symbol = symbol.upper()
+        data = get_stock_quote(symbol)
+        if data['c'] == 0:
+            continue
+        else:
+           valid_symbol = True             
+
+    stock_menu = """
+    Choose an option below:
+    1: Get Stock Quote
+    2: Get Company News
+    3: Get Recommendations
+    4: Get Company Profile
+    Exit
+    """
+    option = ""
+    while option.lower() != "exit":
+        option = input(stock_menu)
+        if option == "1":
+            print(get_stock_quote(symbol))
+        elif option == "2":
+            print(get_company_news(symbol))
+        elif option == "3":
+            print(get_recommendations(symbol))
+        elif option == "4":
+            print(get_company_profile(symbol))
+        else:
+            print("Entry is invalid")
+
+
+
+if __name__ == "__main__":
+    main()
