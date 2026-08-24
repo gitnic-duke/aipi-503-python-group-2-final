@@ -57,3 +57,17 @@ def get_recommendations(symbol):
     data = response.json()
     
     return data
+
+def get_company_profile(symbol):
+    """
+    Retrieves the company profile for a given ticker symbol.
+
+    Parameters:
+            symbol (str): Stock ticker symbol.
+    """
+    url = "https://finnhub.io/api/v1/stock/profile2"
+    params = {"symbol": symbol, "token": API_KEY}
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    return data
