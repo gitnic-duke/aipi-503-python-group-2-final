@@ -25,7 +25,9 @@ def display_stock_day_data(symbol):
         symbol (str): Stock ticker symbol.
     """
     data = API.get_stock_quote(symbol)
-    
+    if data['c'] == 0:
+        st.subheader("Invalid Stock Ticker")
+        return
     col1, col2 = st.columns(2)
     chart_data = pd.DataFrame({
     "Price": [data['o'], data['h'], data['l'], data['c'], data['pc']]
@@ -91,7 +93,13 @@ def display_expert_recommendations(symbol):
     Parameters:
             symbol (str): Stock ticker symbol.
     """
+    if API.get_recommendations(symbol) == []:
+        st.subheader("Invalid Stock Ticker")
+        return
     current_recommendations = API.get_recommendations(symbol)[0]
+    # if current_recommendations.empty():
+    #     st.subheader("Invalid Stock Ticker")
+    #     return
     timestamp = current_recommendations["period"]
     recommendation_categories = ["strongBuy", "buy", "hold", "sell", "strongSell"]
     recommendation_counts_dict = {k: current_recommendations[k] for k in recommendation_categories}
@@ -131,7 +139,7 @@ def display_price_alert(symbol, percent_change):
 def main():
     st.title("Welcome to the Stock Market App")
     st.subheader("Track stock prices, view company info, and stay on top of the market, all in one place:")
-    ticker = st.text_input("Which stock ticker would like to see?")
+    ticker = st.text_input("Which stock ticker would you like to see?")
 
     if st.button("Stock Day Data"):
         display_stock_day_data(ticker)
